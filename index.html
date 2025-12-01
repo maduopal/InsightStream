@@ -19,41 +19,49 @@
                         primary: {
                             50: '#eff6ff',
                             100: '#dbeafe',
-                            500: '#3b82f6', // Blue Corporate
+                            500: '#3b82f6',
                             600: '#2563eb',
                             700: '#1d4ed8',
                             900: '#1e3a8a',
                         },
-                        dark: '#0f172a', // Slate 900
+                        dark: '#0f172a',
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.3s ease-out forwards',
+                        'zoom-in': 'zoomIn 0.3s ease-out forwards',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        zoomIn: {
+                            '0%': { opacity: '0', transform: 'scale(0.95)' },
+                            '100%': { opacity: '1', transform: 'scale(1)' },
+                        }
                     }
                 }
             }
         }
     </script>
     <style>
-        /* Gradient Text */
         .text-gradient {
             background: linear-gradient(to right, #2563eb, #9333ea);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        /* Dashboard Mockup Tilt */
-        .perspective-container {
-            perspective: 1000px;
-        }
+        .perspective-container { perspective: 1000px; }
         .tilted-image {
             transform: rotateX(5deg) rotateY(-5deg) rotateZ(2deg);
             box-shadow: 20px 20px 50px rgba(0,0,0,0.2);
             transition: transform 0.5s ease;
         }
-        .tilted-image:hover {
-            transform: rotateX(0) rotateY(0) rotateZ(0);
-        }
+        .tilted-image:hover { transform: rotateX(0) rotateY(0) rotateZ(0); }
     </style>
 </head>
 <body class="bg-white text-slate-800 font-sans antialiased">
 
-    <nav class="fixed w-full z-50 bg-white/80 backdrop-blur-md border-b border-slate-100 transition-all" id="navbar">
+    <nav class="fixed w-full z-40 bg-white/80 backdrop-blur-md border-b border-slate-100 transition-all" id="navbar">
         <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
             <div class="flex items-center gap-2 text-primary-700 font-bold text-xl tracking-tight">
                 <i class="fa-solid fa-chart-pie text-2xl"></i> InsightStream
@@ -67,9 +75,9 @@
 
             <div class="flex items-center gap-4">
                 <a href="#" class="hidden md:block text-sm font-medium text-slate-600 hover:text-slate-900">Sign In</a>
-                <a href="#" class="bg-primary-600 hover:bg-primary-700 text-white px-5 py-2.5 rounded-full text-sm font-semibold transition-all shadow-lg shadow-primary-500/30">
+                <button onclick="openModal()" class="bg-primary-600 hover:bg-primary-700 text-white px-5 py-2.5 rounded-full text-sm font-semibold transition-all shadow-lg shadow-primary-500/30">
                     Get Started
-                </a>
+                </button>
             </div>
         </div>
     </nav>
@@ -91,7 +99,7 @@
                 </p>
 
                 <div class="flex flex-col sm:flex-row gap-4">
-                    <button class="bg-primary-600 hover:bg-primary-700 text-white px-8 py-4 rounded-xl font-bold text-lg transition-all shadow-xl shadow-primary-600/20 flex items-center justify-center gap-2">
+                    <button onclick="openModal()" class="bg-primary-600 hover:bg-primary-700 text-white px-8 py-4 rounded-xl font-bold text-lg transition-all shadow-xl shadow-primary-600/20 flex items-center justify-center gap-2">
                         Start Free Trial <i class="fa-solid fa-arrow-right"></i>
                     </button>
                     <button class="bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 px-8 py-4 rounded-xl font-bold text-lg transition-all flex items-center justify-center gap-2">
@@ -224,7 +232,7 @@
                         <li class="flex gap-3"><i class="fa-solid fa-check text-green-400"></i> 1 Integration</li>
                         <li class="flex gap-3"><i class="fa-solid fa-check text-green-400"></i> Basic Analytics</li>
                     </ul>
-                    <button class="w-full bg-slate-700 hover:bg-slate-600 text-white font-bold py-3 rounded-lg transition-colors">Get Started</button>
+                    <button onclick="openModal()" class="w-full bg-slate-700 hover:bg-slate-600 text-white font-bold py-3 rounded-lg transition-colors">Get Started</button>
                 </div>
 
                 <div class="bg-primary-600 p-8 rounded-2xl transform md:-translate-y-4 shadow-2xl shadow-primary-900/50 relative">
@@ -238,7 +246,7 @@
                         <li class="flex gap-3"><i class="fa-solid fa-check text-white"></i> Revenue Impact Score</li>
                         <li class="flex gap-3"><i class="fa-solid fa-check text-white"></i> Priority Support</li>
                     </ul>
-                    <button class="w-full bg-white text-primary-700 hover:bg-slate-100 font-bold py-3 rounded-lg transition-colors">Start Free Trial</button>
+                    <button onclick="openModal()" class="w-full bg-white text-primary-700 hover:bg-slate-100 font-bold py-3 rounded-lg transition-colors">Start Free Trial</button>
                 </div>
 
                 <div class="bg-slate-800/50 border border-slate-700 p-8 rounded-2xl hover:border-slate-500 transition-colors">
@@ -259,7 +267,6 @@
     <section class="py-24 bg-slate-50">
         <div class="max-w-3xl mx-auto px-6">
             <h2 class="text-3xl font-bold text-center mb-12 text-slate-900">Frequently Asked Questions</h2>
-            
             <div class="space-y-4">
                 <div class="bg-white p-6 rounded-xl border border-slate-200 cursor-pointer group" onclick="this.classList.toggle('active')">
                     <div class="flex justify-between items-center">
@@ -301,6 +308,56 @@
             </div>
         </div>
     </footer>
+
+    <div id="form-modal" class="fixed inset-0 z-[100] hidden">
+        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity" onclick="closeModal()"></div>
+        
+        <div class="relative z-10 w-full h-full flex items-center justify-center p-4">
+            <div class="bg-white w-full max-w-3xl h-[85vh] rounded-2xl shadow-2xl overflow-hidden relative animate-zoom-in flex flex-col">
+                <div class="flex justify-between items-center p-4 border-b border-slate-100 bg-slate-50">
+                    <h3 class="font-bold text-slate-700">Join the Waitlist / Start Trial</h3>
+                    <button onclick="closeModal()" class="text-slate-400 hover:text-red-500 transition-colors p-1">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                </div>
+                
+                <div class="flex-1 bg-white relative">
+                     <iframe 
+                        src="https://docs.google.com/forms/d/e/1FAIpQLSd7M3wFpWnZ4-G_J5X8nC_Y4kZ5-X8nC_Y4kZ5-X8nC_Y4k/viewform?embedded=true" 
+                        width="100%" 
+                        height="100%" 
+                        frameborder="0" 
+                        marginheight="0" 
+                        marginwidth="0"
+                        class="absolute inset-0 w-full h-full"
+                    >Loading…</iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openModal() {
+            const modal = document.getElementById('form-modal');
+            modal.classList.remove('hidden');
+            // Mencegah scroll pada body saat modal terbuka
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('form-modal');
+            modal.classList.add('hidden');
+            // Mengembalikan scroll body
+            document.body.style.overflow = 'auto';
+        }
+        
+        // Menutup modal dengan tombol ESC
+        document.addEventListener('keydown', function(event) {
+            if (event.key === "Escape") {
+                closeModal();
+            }
+        });
+    </script>
 
 </body>
 </html>
