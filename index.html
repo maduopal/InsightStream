@@ -102,7 +102,7 @@
                     <button onclick="openModal()" class="bg-primary-600 hover:bg-primary-700 text-white px-8 py-4 rounded-xl font-bold text-lg transition-all shadow-xl shadow-primary-600/20 flex items-center justify-center gap-2">
                         Start Free Trial <i class="fa-solid fa-arrow-right"></i>
                     </button>
-                    <button class="bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 px-8 py-4 rounded-xl font-bold text-lg transition-all flex items-center justify-center gap-2">
+                    <button onclick="openVideoModal()" class="bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 px-8 py-4 rounded-xl font-bold text-lg transition-all flex items-center justify-center gap-2">
                         <i class="fa-solid fa-play"></i> Watch Demo
                     </button>
                 </div>
@@ -311,7 +311,6 @@
 
     <div id="form-modal" class="fixed inset-0 z-[100] hidden">
         <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity" onclick="closeModal()"></div>
-        
         <div class="relative z-10 w-full h-full flex items-center justify-center p-4">
             <div class="bg-white w-full max-w-3xl h-[85vh] rounded-2xl shadow-2xl overflow-hidden relative animate-zoom-in flex flex-col">
                 <div class="flex justify-between items-center p-4 border-b border-slate-100 bg-slate-50">
@@ -320,15 +319,10 @@
                         <i class="fa-solid fa-xmark text-xl"></i>
                     </button>
                 </div>
-                
                 <div class="flex-1 bg-white relative">
-                     <iframe 
-                        src="https://docs.google.com/forms/d/e/1FAIpQLSeeYToYpqsUCw_6EErxkpstauNyn1_pGkRHVCbm9k7YB2wTkg/viewform?embedded=true" 
-                        width="100%" 
-                        height="100%" 
-                        frameborder="0" 
-                        marginheight="0" 
-                        marginwidth="0"
+                    <iframe 
+                        src="https://docs.google.com/forms/d/e/1FAIpQLSd7M3wFpWnZ4-G_J5X8nC_Y4kZ5-X8nC_Y4kZ5-X8nC_Y4k/viewform?embedded=true" 
+                        width="100%" height="100%" frameborder="0" marginheight="0" marginwidth="0"
                         class="absolute inset-0 w-full h-full"
                     >Loading…</iframe>
                 </div>
@@ -336,29 +330,68 @@
         </div>
     </div>
 
+    <div id="video-modal" class="fixed inset-0 z-[100] hidden">
+        <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-sm transition-opacity" onclick="closeVideoModal()"></div>
+        <div class="relative z-10 w-full h-full flex items-center justify-center p-4">
+            <div class="bg-black w-full max-w-5xl aspect-video rounded-2xl shadow-2xl overflow-hidden relative animate-zoom-in group">
+                <button onclick="closeVideoModal()" class="absolute top-4 right-4 z-20 text-white/70 hover:text-white bg-black/50 hover:bg-red-600 rounded-full w-10 h-10 flex items-center justify-center transition-all">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+                
+                <iframe id="youtube-frame" class="w-full h-full" 
+                    src="" 
+                    title="YouTube video player" frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+                </iframe>
+            </div>
+        </div>
+    </div>
+
     <script>
+        // --- LOGIC FORM MODAL ---
         function openModal() {
             const modal = document.getElementById('form-modal');
             modal.classList.remove('hidden');
-            // Mencegah scroll pada body saat modal terbuka
             document.body.style.overflow = 'hidden';
         }
 
         function closeModal() {
             const modal = document.getElementById('form-modal');
             modal.classList.add('hidden');
-            // Mengembalikan scroll body
+            document.body.style.overflow = 'auto';
+        }
+
+        // --- LOGIC VIDEO MODAL ---
+        // Link video kamu: https://www.youtube.com/embed/0yVgZWgR2dQ?si=nugeGYdpglg-ApQq
+        const videoSrc = "https://www.youtube.com/embed/0yVgZWgR2dQ?si=nugeGYdpglg-ApQq&autoplay=1";
+
+        function openVideoModal() {
+            const modal = document.getElementById('video-modal');
+            const frame = document.getElementById('youtube-frame');
+            // Set src saat dibuka agar autoplay jalan
+            frame.src = videoSrc;
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeVideoModal() {
+            const modal = document.getElementById('video-modal');
+            const frame = document.getElementById('youtube-frame');
+            // Kosongkan src saat ditutup agar suara berhenti
+            frame.src = ""; 
+            modal.classList.add('hidden');
             document.body.style.overflow = 'auto';
         }
         
-        // Menutup modal dengan tombol ESC
+        // --- GLOBAL KEYBOARD ESC ---
         document.addEventListener('keydown', function(event) {
             if (event.key === "Escape") {
                 closeModal();
+                closeVideoModal();
             }
         });
     </script>
 
 </body>
 </html>
-
